@@ -1,7 +1,7 @@
 ## Overview
 PyQtChess is a desktop application which provides a Chess GUI written in PyQt5, along with an integrated chess engine written in pure Python. Unlike most other pure Python chess engines, PyQtChess is focused on playing strength, and has an Elo rating of ~2150.
 
-# Supported Platforms
+## Supported Platforms
 * Linux (All Python versions)
 * Windows 64-bit (Python versions 3.4 - 3.9)
 
