@@ -1,0 +1,10 @@
+wheel
+https://download.lfd.uci.edu/pythonlibs/z2tqcw5k/gmpy2-2.0.8-cp34-cp34m-win_amd64.whl ; platform_system=="Windows" and python_version=="3.4"
+https://download.lfd.uci.edu/pythonlibs/z2tqcw5k/gmpy2-2.0.8-cp35-cp35m-win_amd64.whl ; platform_system=="Windows" and python_version=="3.5"
+https://download.lfd.uci.edu/pythonlibs/z2tqcw5k/gmpy2-2.0.8-cp36-cp36m-win_amd64.whl ; platform_system=="Windows" and python_version=="3.6"
+https://download.lfd.uci.edu/pythonlibs/z2tqcw5k/gmpy2-2.0.8-cp37-cp37m-win_amd64.whl ; platform_system=="Windows" and python_version=="3.7"
+https://download.lfd.uci.edu/pythonlibs/z2tqcw5k/gmpy2-2.0.8-cp38-cp38-win_amd64.whl ; platform_system=="Windows" and python_version=="3.8"
+https://download.lfd.uci.edu/pythonlibs/z2tqcw5k/gmpy2-2.0.8-cp39-cp39-win_amd64.whl ; platform_system=="Windows" and python_version=="3.9"
+gmpy2 ; platform_system=="Linux"
+matplotlib
+PyQt5
