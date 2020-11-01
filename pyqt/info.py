@@ -108,6 +108,7 @@ class MoveFrame(QScrollArea):
             if index % 2 == 0:
                 move_num = (index // 2) + 1
                 move_num_label = QLabel(str(move_num) + ".")
+                move_num_label.setStyleSheet('color: black')
                 move_num_label.setFont(font)
                 self.layout.addWidget(move_num_label, index // 2, 0)
                 column_num = 1
@@ -117,12 +118,14 @@ class MoveFrame(QScrollArea):
             # Convert move to SAN and add to frame
             san_move = temp_pos.move_to_san(move)
             move_label = QLabel(san_move)
+            move_label.setStyleSheet('color: black')
             move_label.setFont(font)
             self.layout.addWidget(move_label, index // 2, column_num)
 
             # Highlight most recent move
             if index == current_move_index:
-                move_label.setStyleSheet('background-color : yellow')
+                move_label.setStyleSheet('background-color: yellow;'
+                                         'color: black')
 
             # Make move on temporary position
             temp_pos.make_move(move)
