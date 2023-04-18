@@ -499,8 +499,8 @@ class PieceLabel(QLabel):
                 if self.dst_square.objectName() in self.legal_dst_squares:  # If legal move
                     # Snap to destination square
                     self.board.layout.removeWidget(self)
-                    row = self.dst_square.y() / self.board.sqr_size
-                    col = self.dst_square.x() / self.board.sqr_size
+                    row = int(self.dst_square.y() / self.board.sqr_size)
+                    col = int(self.dst_square.x() / self.board.sqr_size)
                     self.board.layout.addWidget(self, row, col)
 
                     src_sqr_index = common.san_to_index[self.src_square.objectName()]
