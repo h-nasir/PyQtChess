@@ -59,7 +59,7 @@ class ComputerFrame(QFrame):
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
-        self.font.setPointSize(event.size().width() / 30)
+        self.font.setPointSize(int(event.size().width() / 30))
         self.name_label.setFont(self.font)
 
 
@@ -270,5 +270,5 @@ class PlayerFrame(QFrame):
 
         def resizeEvent(self, event):
             super().resizeEvent(event)
-            self.font.setPointSize(event.size().width() / 30)
+            self.font.setPointSize(int(event.size().width() / 30))
             self.name_label.setFont(self.font)

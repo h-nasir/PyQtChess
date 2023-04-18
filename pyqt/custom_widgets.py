@@ -30,7 +30,7 @@ class MenuLabel(QLabel):
 
     def resizeEvent(self, event):
         # Scale font size relative to label width
-        self.font.setPointSize(event.size().width() / self.font_scale)
+        self.font.setPointSize(int(event.size().width() / self.font_scale))
         self.setFont(self.font)
 
 
@@ -52,7 +52,7 @@ class MenuButton(QPushButton):
     def resizeEvent(self, event):
         # Scale font size relative to button width
         if self.scalable:
-            self.font.setPointSize(event.size().width() / self.font_scale)
+            self.font.setPointSize(int(event.size().width() / self.font_scale))
             self.setFont(self.font)
 
     def enterEvent(self, event):
