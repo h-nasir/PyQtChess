@@ -2,7 +2,7 @@ import copy
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtWidgets import QCheckBox, QDialog, QFrame, QHBoxLayout, QSlider, QStackedWidget, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QCheckBox, QDialog, QFrame, QHBoxLayout, QMessageBox, QSlider, QStackedWidget, QVBoxLayout, QWidget
 
 import common
 from pyqt.custom_widgets import MenuButton, MenuImage, MenuLabel
@@ -102,6 +102,15 @@ class MenuFrame(QFrame):
     def open_dialog(self, load_game=False):
         if load_game:
             if not self.parent.user or not self.parent.user.saved_game:
+                info_message = QMessageBox()
+                info_message.setWindowIcon(QIcon('./assets/icons/pawn_icon.png'))
+                info_message.setIcon(QMessageBox.Warning)
+                info_message.setWindowTitle("Chess")
+                info_message.setText("There are no saved games")
+                info_message.setInformativeText("Please start a new one")
+                info_message.setStandardButtons(QMessageBox.Ok)
+                info_message.setDefaultButton(QMessageBox.Ok)
+                info_message.exec_()
                 return
             target_func = self.load_game
         else:
