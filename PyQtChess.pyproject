@@ -1,0 +1,18 @@
+{
+    "files":
+        [
+        "pyqt/board.py","common.py","assets/icons/checkbox_checked.png",
+        "attack_tables.py","pyqt/login.py","user.py","pyqt/custom_widgets.py",
+        "flood_fill.py","pyqt/menu.py","pyqt/info.py","pyqt/register.py",
+        "assets/icons/right_arrow.png","assets/icons/reset.png",
+        "assets/icons/crown.png","movegen.py","self_play.py","assets/icons/player.png",
+        "assets/icons/checkbox_unchecked.png","search.py","assets/icons/pawn_icon.png",
+        "pyqt/profile.py","assets/icons/lightbulb.png","pyqt/game.py","eval_tables.py",
+        "assets/icons/left_arrow.png","main.py","consts.py","position.py","evaluate.py",
+        "assets/icons/computer.png","assets/pieces/bb.png","assets/pieces/bk.png",
+        "assets/pieces/bn.png","assets/pieces/bp.png","assets/pieces/bq.png",
+        "assets/pieces/br.png","assets/pieces/wb.png","assets/pieces/wk.png",
+        "assets/pieces/wn.png","assets/pieces/wp.png","assets/pieces/wq.png",
+        "assets/pieces/wr.png"
+        ]
+}
