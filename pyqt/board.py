@@ -41,6 +41,9 @@ class ChessBoard(QFrame):
 
         self.sqr_size = SQR_SIZE
 
+    def setInfo(self, info):
+        self.info = info
+
     def resizeEvent(self, event):
         if event.size().width() > event.size().height():
             self.resize(event.size().height(), event.size().height())
@@ -236,7 +239,7 @@ class ChessBoard(QFrame):
 
     def player_move(self, move):
         self.disable_pieces()
-        self.parent.info.button_frame.disable_buttons()
+        self.info.button_frame.disable_buttons()
 
         self.position.make_move(move)
         self.refresh_from_state()
@@ -248,7 +251,7 @@ class ChessBoard(QFrame):
         if not self.user_is_white:
             self.position.fullmove_number += 1
 
-        self.parent.info.move_frame.update_moves()
+        self.info.move_frame.update_moves()
 
         if self.position.is_game_over():
             self.game_over()
@@ -266,7 +269,7 @@ class ChessBoard(QFrame):
         if self.user_is_white:
             self.position.fullmove_number += 1
 
-        self.parent.info.move_frame.update_moves()
+        self.info.move_frame.update_moves()
 
         if self.position.is_game_over():
             self.game_over()
@@ -281,7 +284,7 @@ class ChessBoard(QFrame):
             else:
                 self.enable_pieces()
 
-        self.parent.info.button_frame.enable_buttons()
+        self.info.button_frame.enable_buttons()
 
     def game_over(self):
         user = self.parent.parent.user

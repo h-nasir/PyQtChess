@@ -30,6 +30,10 @@ class MenuFrame(QFrame):
         new_game_btn.setText("New Game")
         new_game_btn.clicked.connect(self.open_dialog)
 
+        new_multigame_btn = MenuButton()
+        new_multigame_btn.setText("Start Multiple Games")
+        new_multigame_btn.clicked.connect(self.new_multigame)
+
         load_game_btn = MenuButton()
         load_game_btn.setText("Load Game")
         load_game_btn.clicked.connect(lambda: self.open_dialog(True))
@@ -47,6 +51,7 @@ class MenuFrame(QFrame):
         button_layout = QVBoxLayout()
         button_layout.addWidget(img_widget, 2)
         button_layout.addWidget(new_game_btn, 1)
+        button_layout.addWidget(new_multigame_btn, 1)
         button_layout.addWidget(load_game_btn, 1)
         button_layout.addWidget(profile_btn, 1)
         button_layout.addWidget(exit_btn, 1)
@@ -189,6 +194,19 @@ class MenuFrame(QFrame):
         self.parent.game_frame.board.autosave = autosave
         self.parent.game_frame.board.start_game()
         self.parent.stack.setCurrentIndex(1)
+
+    def new_multigame(self):
+        user_is_white = True
+        self_play = False
+        difficulty = 1
+        autosave = False
+        self.parent.multigame_frame.clear_moves()
+        self.parent.multigame_frame.start_game(
+            'w' if user_is_white else 'b',
+            difficulty,
+            autosave,
+            self_play)
+        self.parent.stack.setCurrentIndex(5)
 
     def load_game(self, colour, difficulty, autosave, self_play):
         self.parent.game_frame.board.set_position(copy.deepcopy(self.parent.user.saved_game))

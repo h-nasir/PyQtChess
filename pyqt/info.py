@@ -32,6 +32,9 @@ class Info(QFrame):
         layout.addWidget(self.player_frame, 1)
         self.setLayout(layout)
 
+    def setBoard(self, board):
+        self.board = board
+        self.move_frame.setBoard(board)
 
 class ComputerFrame(QFrame):
     def __init__(self):
@@ -86,6 +89,9 @@ class MoveFrame(QScrollArea):
         
         scroll_widget.setLayout(self.layout)
         self.setWidget(scroll_widget)
+
+    def setBoard(self, board):
+        self.board = board
 
     def clear_moves(self):
         for move_label in self.findChildren(QLabel):
