@@ -12,7 +12,7 @@ class MultiGameFrame(QFrame):
         super().__init__()
 
         self.parent = parent
-        self.colsCount = 2
+        self.colsCount = 3
         self.rowsCount = 2
         self.gridCount = self.colsCount * self.rowsCount
 
@@ -45,7 +45,6 @@ class MultiGameFrame(QFrame):
             game_widget = QWidget()
             game_layout = QHBoxLayout()
             game_layout.setContentsMargins(0, 0, 0, 0)
-            game_layout.setSpacing(30)
             game_layout.addWidget(self.board[i], 8)
             game_layout.addWidget(self.info[i], 3)
             game_widget.setLayout(game_layout)

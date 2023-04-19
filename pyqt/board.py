@@ -64,7 +64,7 @@ class ChessBoard(QFrame):
             for col, file in enumerate('abcdefgh'):
                 square = QWidget(self)
                 square.setObjectName(file + rank)
-                square.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                square.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
                 if row % 2 == col % 2:
                     square.setStyleSheet('background-color: #F0D9B5')
                 else:
@@ -368,8 +368,7 @@ class PieceLabel(QLabel):
 
         self.piece = piece
 
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.setMinimumSize(1, 1)
+        self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         # Make label transparent, so square behind piece is visible
         self.setAttribute(Qt.WA_TranslucentBackground)
