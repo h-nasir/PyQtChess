@@ -32,7 +32,7 @@ class MenuFrame(QFrame):
 
         new_multigame_btn = MenuButton()
         new_multigame_btn.setText("Start Multiple Games")
-        new_multigame_btn.clicked.connect(self.new_multigame)
+        new_multigame_btn.clicked.connect(lambda: self.open_dialog(False, True))
 
         load_game_btn = MenuButton()
         load_game_btn.setText("Load Game")
@@ -104,7 +104,7 @@ class MenuFrame(QFrame):
         menu_layout.addWidget(login_widget, 1)
         self.setLayout(menu_layout)
 
-    def open_dialog(self, load_game=False):
+    def open_dialog(self, load_game=False, is_multiple=False):
         if load_game:
             if not self.parent.user or not self.parent.user.saved_game:
                 info_message = QMessageBox()
@@ -120,6 +120,9 @@ class MenuFrame(QFrame):
             target_func = self.load_game
         else:
             target_func = self.new_game
+
+        if is_multiple:
+            target_func = self.new_multigame
 
         bold_font = QFont()
         bold_font.setBold(True)
@@ -195,14 +198,10 @@ class MenuFrame(QFrame):
         self.parent.game_frame.board.start_game()
         self.parent.stack.setCurrentIndex(1)
 
-    def new_multigame(self):
-        user_is_white = True
-        self_play = False
-        difficulty = 1
-        autosave = False
+    def new_multigame(self, colour, difficulty, autosave, self_play):
         self.parent.multigame_frame.clear_moves()
         self.parent.multigame_frame.start_game(
-            'w' if user_is_white else 'b',
+            colour,
             difficulty,
             autosave,
             self_play)
