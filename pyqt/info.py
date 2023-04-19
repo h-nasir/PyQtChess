@@ -35,6 +35,7 @@ class Info(QFrame):
     def setBoard(self, board):
         self.board = board
         self.move_frame.setBoard(board)
+        self.button_frame.setBoard(board)
 
 class ComputerFrame(QFrame):
     def __init__(self):
@@ -173,6 +174,9 @@ class ButtonFrame(QFrame):
         layout.addWidget(self.undo_move_btn)
         layout.addWidget(self.redo_move_btn)
         self.setLayout(layout)
+
+    def setBoard(self, board):
+        self.board = board
 
     def enable_buttons(self):
         self.reset_btn.setEnabled(True)
