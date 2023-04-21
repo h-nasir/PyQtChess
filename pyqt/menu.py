@@ -121,9 +121,6 @@ class MenuFrame(QFrame):
         else:
             target_func = self.new_game
 
-        if is_multiple:
-            target_func = self.new_multigame
-
         bold_font = QFont()
         bold_font.setBold(True)
 
@@ -166,20 +163,41 @@ class MenuFrame(QFrame):
         slider.setStyleSheet('QSlider::handle:horizontal {background-color: #E6912C}'
                              'QSlider::handle:horizontal:hover {background-color: #D37E19}')
 
+        tables_label = MenuLabel(font_scale=35)
+        tables_label.setText("Number of tables: 2")
+
+        tables = QSlider(Qt.Horizontal)
+        tables.setMinimum(2)
+        tables.setMaximum(12)
+        tables.setTickInterval(2)
+        tables.setTickPosition(QSlider.TicksBothSides)
+        tables.setStyleSheet('QSlider::handle:horizontal {background-color: #E6912C}'
+                             'QSlider::handle:horizontal:hover {background-color: #D37E19}')
+        tables.valueChanged.connect(lambda: tables_label.setText("Number of tables: " + str(tables.value())))
+
         checkbox = QCheckBox()
         checkbox.setText("Enable autosave")
         checkbox.setFont(bold_font)
         checkbox.setStyleSheet('QCheckBox {color: #E6912C}')
 
-        white_btn.clicked.connect(lambda: target_func('w', slider.value(), checkbox.isChecked(), False))
-        black_btn.clicked.connect(lambda: target_func('b', slider.value(), checkbox.isChecked(), False))
-        computer_btn.clicked.connect(lambda: target_func(None, slider.value(), checkbox.isChecked(), True))
+        if is_multiple:
+            target_func = self.new_multigame
+            white_btn.clicked.connect(lambda: self.new_multigame('w', slider.value(), checkbox.isChecked(), False, tables.value()))
+            black_btn.clicked.connect(lambda: self.new_multigame('b', slider.value(), checkbox.isChecked(), False, tables.value()))
+            computer_btn.clicked.connect(lambda: self.new_multigame(None, slider.value(), checkbox.isChecked(), True, tables.value()))
+        else:
+            white_btn.clicked.connect(lambda: target_func('w', slider.value(), checkbox.isChecked(), False))
+            black_btn.clicked.connect(lambda: target_func('b', slider.value(), checkbox.isChecked(), False))
+            computer_btn.clicked.connect(lambda: target_func(None, slider.value(), checkbox.isChecked(), True))
 
         layout = QVBoxLayout()
         layout.addWidget(player_btn_widget)
         layout.addWidget(computer_btn_widget)
         layout.addWidget(slider_label)
         layout.addWidget(slider)
+        if is_multiple:
+            layout.addWidget(tables_label)
+            layout.addWidget(tables)
         if self.parent.user:
             layout.addSpacing(40)
             layout.addWidget(checkbox)
@@ -198,7 +216,8 @@ class MenuFrame(QFrame):
         self.parent.game_frame.board.start_game()
         self.parent.stack.setCurrentIndex(1)
 
-    def new_multigame(self, colour, difficulty, autosave, self_play):
+    def new_multigame(self, colour, difficulty, autosave, self_play, tables_number):
+        self.parent.multigame_frame.update_tablesNumber(tables_number)
         self.parent.multigame_frame.clear_moves()
         self.parent.multigame_frame.start_game(
             colour,

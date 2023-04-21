@@ -43,8 +43,8 @@ class Window(QMainWindow):
         self.setCentralWidget(self.stack)
         self.setWindowTitle("Chess")
         self.setWindowIcon(QIcon('./assets/icons/pawn_icon.png'))
-        self.setMinimumSize(1200, 900)
-        self.show()
+        self.setMinimumSize(1600, 900)
+        self.showMaximized()
         
     def closeEvent(self, event):
         if self.user:

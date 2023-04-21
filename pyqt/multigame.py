@@ -12,8 +12,8 @@ class MultiGameFrame(QFrame):
         super().__init__()
 
         self.parent = parent
-        self.colsCount = 3
-        self.rowsCount = 2
+        self.colsCount = 4
+        self.rowsCount = 3
         self.gridCount = self.colsCount * self.rowsCount
 
         self.setStyleSheet('background-color: #4B4945')
@@ -39,7 +39,7 @@ class MultiGameFrame(QFrame):
         back_layout.addStretch(6)
         back_widget.setLayout(back_layout)
 
-        grid_layout = QGridLayout()
+        self.grid_layout = QGridLayout()
 
         for i in range(self.gridCount):
             game_widget = QWidget()
@@ -49,17 +49,40 @@ class MultiGameFrame(QFrame):
             game_layout.addWidget(self.info[i], 3)
             game_widget.setLayout(game_layout)
 
-            grid_layout.addWidget(game_widget,
+            self.grid_layout.addWidget(game_widget,
                                   int(i / self.colsCount),
                                   int(i % self.colsCount))
 
         vbox_widget = QWidget()
         vbox_layout = QVBoxLayout()
         vbox_layout.addWidget(back_widget, 1)
-        vbox_layout.addLayout(grid_layout, 16)
+        vbox_layout.addLayout(self.grid_layout, 16)
         vbox_widget.setLayout(vbox_layout)
 
         self.setLayout(vbox_layout)
+
+    def update_tablesNumber(self, tablesCount):
+        tableVisibilityMap = {
+            2: [2,0,0],
+            3: [2,1,0],
+            4: [2,2,0],
+            5: [3,2,0],
+            6: [3,3,0],
+            7: [4,3,0],
+            8: [4,4,0],
+            9: [3,3,3],
+            10:[4,3,3],
+            11:[4,4,3],
+            12:[4,4,4]
+        }
+
+        columnsPerRowList = tableVisibilityMap[tablesCount]
+        for i in range(self.gridCount):
+            row = int(i / self.colsCount)
+            column = int(i % self.colsCount)
+
+            layoutitem = self.grid_layout.itemAtPosition(row, column)
+            layoutitem.widget().setVisible(column < columnsPerRowList[row])
 
     def back(self):
         for i in range(self.gridCount):
