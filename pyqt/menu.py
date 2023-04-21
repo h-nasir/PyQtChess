@@ -2,7 +2,7 @@ import copy
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtWidgets import QCheckBox, QDialog, QFrame, QHBoxLayout, QSlider, QStackedWidget, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QCheckBox, QDialog, QFrame, QHBoxLayout, QMessageBox, QSlider, QStackedWidget, QVBoxLayout, QWidget
 
 import common
 from pyqt.custom_widgets import MenuButton, MenuImage, MenuLabel
@@ -30,6 +30,10 @@ class MenuFrame(QFrame):
         new_game_btn.setText("New Game")
         new_game_btn.clicked.connect(self.open_dialog)
 
+        new_multigame_btn = MenuButton()
+        new_multigame_btn.setText("Start Multiple Games")
+        new_multigame_btn.clicked.connect(lambda: self.open_dialog(False, True))
+
         load_game_btn = MenuButton()
         load_game_btn.setText("Load Game")
         load_game_btn.clicked.connect(lambda: self.open_dialog(True))
@@ -47,6 +51,7 @@ class MenuFrame(QFrame):
         button_layout = QVBoxLayout()
         button_layout.addWidget(img_widget, 2)
         button_layout.addWidget(new_game_btn, 1)
+        button_layout.addWidget(new_multigame_btn, 1)
         button_layout.addWidget(load_game_btn, 1)
         button_layout.addWidget(profile_btn, 1)
         button_layout.addWidget(exit_btn, 1)
@@ -99,9 +104,18 @@ class MenuFrame(QFrame):
         menu_layout.addWidget(login_widget, 1)
         self.setLayout(menu_layout)
 
-    def open_dialog(self, load_game=False):
+    def open_dialog(self, load_game=False, is_multiple=False):
         if load_game:
             if not self.parent.user or not self.parent.user.saved_game:
+                info_message = QMessageBox()
+                info_message.setWindowIcon(QIcon('./assets/icons/pawn_icon.png'))
+                info_message.setIcon(QMessageBox.Warning)
+                info_message.setWindowTitle("Chess")
+                info_message.setText("There are no saved games")
+                info_message.setInformativeText("Please start a new one")
+                info_message.setStandardButtons(QMessageBox.Ok)
+                info_message.setDefaultButton(QMessageBox.Ok)
+                info_message.exec_()
                 return
             target_func = self.load_game
         else:
@@ -149,20 +163,41 @@ class MenuFrame(QFrame):
         slider.setStyleSheet('QSlider::handle:horizontal {background-color: #E6912C}'
                              'QSlider::handle:horizontal:hover {background-color: #D37E19}')
 
+        tables_label = MenuLabel(font_scale=35)
+        tables_label.setText("Number of tables: 2")
+
+        tables = QSlider(Qt.Horizontal)
+        tables.setMinimum(2)
+        tables.setMaximum(12)
+        tables.setTickInterval(2)
+        tables.setTickPosition(QSlider.TicksBothSides)
+        tables.setStyleSheet('QSlider::handle:horizontal {background-color: #E6912C}'
+                             'QSlider::handle:horizontal:hover {background-color: #D37E19}')
+        tables.valueChanged.connect(lambda: tables_label.setText("Number of tables: " + str(tables.value())))
+
         checkbox = QCheckBox()
         checkbox.setText("Enable autosave")
         checkbox.setFont(bold_font)
         checkbox.setStyleSheet('QCheckBox {color: #E6912C}')
 
-        white_btn.clicked.connect(lambda: target_func('w', slider.value(), checkbox.isChecked(), False))
-        black_btn.clicked.connect(lambda: target_func('b', slider.value(), checkbox.isChecked(), False))
-        computer_btn.clicked.connect(lambda: target_func(None, slider.value(), checkbox.isChecked(), True))
+        if is_multiple:
+            target_func = self.new_multigame
+            white_btn.clicked.connect(lambda: self.new_multigame('w', slider.value(), checkbox.isChecked(), False, tables.value()))
+            black_btn.clicked.connect(lambda: self.new_multigame('b', slider.value(), checkbox.isChecked(), False, tables.value()))
+            computer_btn.clicked.connect(lambda: self.new_multigame(None, slider.value(), checkbox.isChecked(), True, tables.value()))
+        else:
+            white_btn.clicked.connect(lambda: target_func('w', slider.value(), checkbox.isChecked(), False))
+            black_btn.clicked.connect(lambda: target_func('b', slider.value(), checkbox.isChecked(), False))
+            computer_btn.clicked.connect(lambda: target_func(None, slider.value(), checkbox.isChecked(), True))
 
         layout = QVBoxLayout()
         layout.addWidget(player_btn_widget)
         layout.addWidget(computer_btn_widget)
         layout.addWidget(slider_label)
         layout.addWidget(slider)
+        if is_multiple:
+            layout.addWidget(tables_label)
+            layout.addWidget(tables)
         if self.parent.user:
             layout.addSpacing(40)
             layout.addWidget(checkbox)
@@ -180,6 +215,16 @@ class MenuFrame(QFrame):
         self.parent.game_frame.board.autosave = autosave
         self.parent.game_frame.board.start_game()
         self.parent.stack.setCurrentIndex(1)
+
+    def new_multigame(self, colour, difficulty, autosave, self_play, tables_number):
+        self.parent.multigame_frame.update_tablesNumber(tables_number)
+        self.parent.multigame_frame.clear_moves()
+        self.parent.multigame_frame.start_game(
+            colour,
+            difficulty,
+            autosave,
+            self_play)
+        self.parent.stack.setCurrentIndex(5)
 
     def load_game(self, colour, difficulty, autosave, self_play):
         self.parent.game_frame.board.set_position(copy.deepcopy(self.parent.user.saved_game))

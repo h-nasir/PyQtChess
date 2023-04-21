@@ -32,6 +32,10 @@ class Info(QFrame):
         layout.addWidget(self.player_frame, 1)
         self.setLayout(layout)
 
+    def setBoard(self, board):
+        self.board = board
+        self.move_frame.setBoard(board)
+        self.button_frame.setBoard(board)
 
 class ComputerFrame(QFrame):
     def __init__(self):
@@ -59,7 +63,7 @@ class ComputerFrame(QFrame):
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
-        self.font.setPointSize(event.size().width() / 30)
+        self.font.setPointSize(int(event.size().width() / 30))
         self.name_label.setFont(self.font)
 
 
@@ -86,6 +90,9 @@ class MoveFrame(QScrollArea):
         
         scroll_widget.setLayout(self.layout)
         self.setWidget(scroll_widget)
+
+    def setBoard(self, board):
+        self.board = board
 
     def clear_moves(self):
         for move_label in self.findChildren(QLabel):
@@ -167,6 +174,9 @@ class ButtonFrame(QFrame):
         layout.addWidget(self.undo_move_btn)
         layout.addWidget(self.redo_move_btn)
         self.setLayout(layout)
+
+    def setBoard(self, board):
+        self.board = board
 
     def enable_buttons(self):
         self.reset_btn.setEnabled(True)
@@ -270,5 +280,5 @@ class PlayerFrame(QFrame):
 
         def resizeEvent(self, event):
             super().resizeEvent(event)
-            self.font.setPointSize(event.size().width() / 30)
+            self.font.setPointSize(int(event.size().width() / 30))
             self.name_label.setFont(self.font)

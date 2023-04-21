@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QStackedWidg
 
 from pyqt.menu import MenuFrame
 from pyqt.game import GameFrame
+from pyqt.multigame import MultiGameFrame
 from pyqt.profile import ProfileFrame
 from pyqt.register import RegisterFrame
 from pyqt.login import LoginFrame
@@ -22,6 +23,7 @@ class Window(QMainWindow):
         # Instantiate frames for different pages
         self.main_menu = MenuFrame(self)
         self.game_frame = GameFrame(self)
+        self.multigame_frame = MultiGameFrame(self)
         self.profile_frame = ProfileFrame(self)
         self.register_frame = RegisterFrame(self)
         self.login_frame = LoginFrame(self)
@@ -32,6 +34,7 @@ class Window(QMainWindow):
         self.stack.insertWidget(2, self.profile_frame)
         self.stack.insertWidget(3, self.register_frame)
         self.stack.insertWidget(4, self.login_frame)
+        self.stack.insertWidget(5, self.multigame_frame)
 
         # Set current frame to main menu
         self.stack.setCurrentIndex(0)
@@ -40,8 +43,8 @@ class Window(QMainWindow):
         self.setCentralWidget(self.stack)
         self.setWindowTitle("Chess")
         self.setWindowIcon(QIcon('./assets/icons/pawn_icon.png'))
-        self.setMinimumSize(1200, 900)
-        self.show()
+        self.setMinimumSize(1600, 900)
+        self.showMaximized()
         
     def closeEvent(self, event):
         if self.user:

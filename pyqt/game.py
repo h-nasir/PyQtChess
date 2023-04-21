@@ -18,6 +18,7 @@ class GameFrame(QFrame):
 
         self.board = ChessBoard(self)
         self.info = Info(self)
+        self.board.setInfo(self.info)
 
         back_btn = MenuButton()
         back_btn.setText("Back")

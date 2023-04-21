@@ -41,6 +41,9 @@ class ChessBoard(QFrame):
 
         self.sqr_size = SQR_SIZE
 
+    def setInfo(self, info):
+        self.info = info
+
     def resizeEvent(self, event):
         if event.size().width() > event.size().height():
             self.resize(event.size().height(), event.size().height())
@@ -61,7 +64,7 @@ class ChessBoard(QFrame):
             for col, file in enumerate('abcdefgh'):
                 square = QWidget(self)
                 square.setObjectName(file + rank)
-                square.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                square.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
                 if row % 2 == col % 2:
                     square.setStyleSheet('background-color: #F0D9B5')
                 else:
@@ -236,7 +239,7 @@ class ChessBoard(QFrame):
 
     def player_move(self, move):
         self.disable_pieces()
-        self.parent.info.button_frame.disable_buttons()
+        self.info.button_frame.disable_buttons()
 
         self.position.make_move(move)
         self.refresh_from_state()
@@ -248,7 +251,7 @@ class ChessBoard(QFrame):
         if not self.user_is_white:
             self.position.fullmove_number += 1
 
-        self.parent.info.move_frame.update_moves()
+        self.info.move_frame.update_moves()
 
         if self.position.is_game_over():
             self.game_over()
@@ -266,7 +269,7 @@ class ChessBoard(QFrame):
         if self.user_is_white:
             self.position.fullmove_number += 1
 
-        self.parent.info.move_frame.update_moves()
+        self.info.move_frame.update_moves()
 
         if self.position.is_game_over():
             self.game_over()
@@ -281,7 +284,7 @@ class ChessBoard(QFrame):
             else:
                 self.enable_pieces()
 
-        self.parent.info.button_frame.enable_buttons()
+        self.info.button_frame.enable_buttons()
 
     def game_over(self):
         user = self.parent.parent.user
@@ -365,8 +368,7 @@ class PieceLabel(QLabel):
 
         self.piece = piece
 
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.setMinimumSize(1, 1)
+        self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         # Make label transparent, so square behind piece is visible
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -499,8 +501,8 @@ class PieceLabel(QLabel):
                 if self.dst_square.objectName() in self.legal_dst_squares:  # If legal move
                     # Snap to destination square
                     self.board.layout.removeWidget(self)
-                    row = self.dst_square.y() / self.board.sqr_size
-                    col = self.dst_square.x() / self.board.sqr_size
+                    row = int(self.dst_square.y() / self.board.sqr_size)
+                    col = int(self.dst_square.x() / self.board.sqr_size)
                     self.board.layout.addWidget(self, row, col)
 
                     src_sqr_index = common.san_to_index[self.src_square.objectName()]
